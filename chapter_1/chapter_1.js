@@ -49,15 +49,18 @@ function statement(invoice, plays) {
     }).format(aNumber / 100);
   }
 
-  let totalAmount = 0;
   let result = `Statement for ${invoice.customer}\n`;
+
+  let totalAmount = 0;
+  for (const perf of invoice.performances) {
+    totalAmount += amountFor(perf);
+  }
 
   for (const perf of invoice.performances) {
     // 印出這筆訂單
     result += `${playFor(perf).name}: ${usd(amountFor(perf))} (${
       perf.audience
     } seats)\n`;
-    totalAmount += amountFor(perf);
   }
 
   result += `Amount owed is ${usd(totalAmount)}\n`;
