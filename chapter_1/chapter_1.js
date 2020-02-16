@@ -41,6 +41,14 @@ function statement(invoice, plays) {
     return volumeCredits;
   }
 
+  function calcTotalAmount() {
+    let totalAmount = 0;
+    for (const perf of invoice.performances) {
+      totalAmount += amountFor(perf);
+    }
+    return totalAmount;
+  }
+
   function usd(aNumber) {
     return new Intl.NumberFormat("en-US", {
       style: "currency",
@@ -51,10 +59,7 @@ function statement(invoice, plays) {
 
   let result = `Statement for ${invoice.customer}\n`;
 
-  let totalAmount = 0;
-  for (const perf of invoice.performances) {
-    totalAmount += amountFor(perf);
-  }
+  let totalAmount = calcTotalAmount();
 
   for (const perf of invoice.performances) {
     // 印出這筆訂單
