@@ -6,10 +6,11 @@ function statement(invoice, plays) {
   return renderPlainText(statementData, plays);
 
   function enrichPerformance(aPerformance) {
-    const result = Object.assign({}, aPerformance)
-    result.play = playFor(result)
-    result.amount = amountFor(result)
-    return result
+    const result = Object.assign({}, aPerformance);
+    result.play = playFor(result);
+    result.amount = amountFor(result);
+    result.volumeCredits = volumeCreditsFor(result);
+    return result;
   }
 
   function playFor(aPerformance) {
@@ -37,9 +38,7 @@ function statement(invoice, plays) {
     }
     return result;
   }
-}
 
-function renderPlainText(data) {
   function volumeCreditsFor(aPerformance) {
     let result = 0;
     result += Math.max(aPerformance.audience - 30, 0);
@@ -47,11 +46,13 @@ function renderPlainText(data) {
       result += Math.floor(aPerformance.audience / 5);
     return result;
   }
+}
 
+function renderPlainText(data) {
   function totalVolumeCredits() {
     let result = 0;
     for (let perf of data.performances) {
-      result += volumeCreditsFor(perf);
+      result += perf.volumeCredits;
     }
     return result;
   }
